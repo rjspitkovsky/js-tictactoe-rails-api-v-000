@@ -62,16 +62,15 @@ return false
 }
 
 function doTurn(element) {
+
   if (updateState(element)) {
     turn+= 1
   }
   if (checkWinner()) {
     resetBoard()
-    saveGame()
   } else if (turn === 9){
     setMessage("Tie game.")
     resetBoard()
-    saveGame()
   }
 }
 
@@ -99,7 +98,6 @@ function clickedSquare() {
 }
 
 function clearGamebutton() {
-  // setMessage("")
   $('#clear').on('click', resetBoard)
 }
 
@@ -111,6 +109,24 @@ function previousGamesbutton() {
   $('#previous').on('click', previousGames)
 }
 
-function saveGame() {}
+function saveGame() {
+  if (currentGame !== 0) {
+    $.ajax({
+      type: 'PATCH',
+      url: '/games' + currentGame,
+      dataType: 'json'
+      data: {state: data}
+    }).done(function(game) {
+      let gameData = game.data
+      currentGame = gameData.id
+    })
+  } else {
+    $.post('/games', {state: data}, function(game){
+      let id = game.data.id
+      currentGame = id
+      $('#games').append(`<button id="${id}">Game ${id}</button>`)
+    })
+  }
+}
 
 function previousGames() {}
