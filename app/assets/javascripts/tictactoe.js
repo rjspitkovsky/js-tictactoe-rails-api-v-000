@@ -110,12 +110,16 @@ function previousGamesbutton() {
 }
 
 function saveGame() {
+  let tds = document.querySelectorAll("td")
+  for(i = 0; i < tds.length; i++) {
+    board[i] = tds[i].innerHTML
+  }
   if (currentGame !== 0) {
     $.ajax({
       type: 'PATCH',
       url: '/games' + currentGame,
       dataType: 'json'
-      data: {state: data}
+      tds: {state: data}
     }).done(function(game) {
       let gameData = game.data
       currentGame = gameData.id
