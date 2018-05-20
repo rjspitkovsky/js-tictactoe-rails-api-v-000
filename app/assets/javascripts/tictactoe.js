@@ -62,15 +62,16 @@ return false
 }
 
 function doTurn(element) {
-
   if (updateState(element)) {
     turn+= 1
   }
   if (checkWinner()) {
     resetBoard()
+    saveGame()
   } else if (turn === 9){
     setMessage("Tie game.")
     resetBoard()
+    saveGame()
   }
 }
 
@@ -98,6 +99,7 @@ function clickedSquare() {
 }
 
 function clearGamebutton() {
+  // setMessage("")
   $('#clear').on('click', resetBoard)
 }
 
